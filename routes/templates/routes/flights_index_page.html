@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+{% block content %}
+<div class="bg-gray-100 text-gray-900 font-sans">
+
+  <div class="max-w-4xl mx-auto py-12 px-4">
+    <h1 class="text-3xl font-bold mb-8">{{ page.title }}</h1>
+
+    <div class="grid gap-6">
+      {% for subpage in page.get_children.live %}
+        <a href="{{ subpage.url }}" class="block p-6 bg-white rounded-xl shadow hover:shadow-lg transition">
+          <h2 class="text-xl font-semibold">{{ subpage.title }}</h2>
+          <p class="text-sm text-gray-500 mt-1">
+            {{ subpage.specific.source }} → {{ subpage.specific.destination }}
+          </p>
+        </a>
+      {% empty %}
+        <p class="text-gray-600">No routes published yet.</p>
+      {% endfor %}
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}
