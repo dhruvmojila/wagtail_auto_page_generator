@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="max-w-5xl mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6">
+      Cheap Flights from {{ page.source }} to {{ page.destination }}
+    </h1>
+
+    {% if page.get_fares %}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {% for fare in page.get_fares %}
+        <div class="border border-gray-200 rounded-2xl shadow-md p-6 bg-white">
+          <div class="flex items-center justify-between mb-2">
+            <h2 class="text-xl font-bold text-gray-800">
+              {{ fare.departairline }} • {{ fare.origin }} → {{ fare.destination }}
+            </h2>
+            <span class="text-lg font-semibold text-green-600">${{ fare.fare }}</span>
+          </div>
+  
+          <div class="text-sm text-gray-600 space-y-1 mb-4">
+            <p><strong>Depart:</strong> {{ fare.departdate }} at {{ fare.departuretime }}</p>
+            <p><strong>Arrive:</strong> {{ fare.departarrivaldate }} at {{ fare.departarrivaltime }}</p>
+            <p><strong>Return:</strong> {{ fare.returndate }} at {{ fare.returndeparturetime }}</p>
+          </div>
+  
+          <div class="flex items-center justify-between text-sm text-gray-500">
+            <span>Stops: {{ fare.departnumberofstops }} (out) / {{ fare.returnnumberofstops }} (return)</span>
+            <span>Cabin: {{ fare.cabin }}</span>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="text-gray-500">No fare data available.</p>
+  {% endif %}
+
+  <div class="mt-10">
+    <h2 class="text-2xl font-bold mb-4">Airlines That Serve This Route</h2>
+    {% if page.airlines_serving_route %}
+      <div class="flex flex-wrap gap-4">
+        {% for code in page.airlines_serving_route %}
+          <div class="bg-white shadow rounded px-4 py-2 text-center text-sm font-medium text-gray-800">
+            {{ code }}
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-gray-600">No airline data available.</p>
+    {% endif %}
+  </div>
+
+  <div class="mt-12">
+    <h2 class="text-2xl font-bold mb-4">Popular Flight Searches</h2>
+    {% if page.popular_routes %}
+      <div class="grid md:grid-cols-2 gap-4">
+        {% for route in page.popular_routes %}
+          <div class="bg-white shadow-md rounded-lg p-4 border border-gray-200">
+            <div class="text-lg font-semibold text-indigo-700">
+              {{ route.origin }} → {{ route.destination }}
+            </div>
+            <div class="text-gray-600 text-sm">
+              Searched: {{ route.search_count }} times
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-gray-600">No popular route data available yet.</p>
+    {% endif %}
+  </div>
+  
+  </div>
+{% endblock %}
