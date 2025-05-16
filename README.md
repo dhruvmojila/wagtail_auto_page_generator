@@ -1,0 +1,1 @@
+# wagtail_auto_page_generator
